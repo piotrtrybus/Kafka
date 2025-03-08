@@ -48,5 +48,32 @@ kafka-console-producer.sh --bootstrap-server localhost:9092 --topic first_topic 
 >example key:example value
 >name:Stephane
 
+4. Producing with RoundRobin partitioner (super inefficient, never for prod)
+kafka-console-producer.sh --bootstrap-server localhost:9092 --producer-property partitioner.class=org.apache.kafka.clients.producer.RoundRobinPartitioner --topic fourth_topic
+
+
+# Consuming
+
+1. Start a consumer
+kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic fourth_topic
+
+2. Run producer in other terminal:
+kafka-console-producer.sh --bootstrap-server localhost:9092 --producer-property partitioner.class=org.apache.kafka.clients.producer.RoundRobinPartitioner --topic fourth_topic
+
+3. Consume from the beginning 
+kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic first_topic --from-beginning
+
+4. Consume with partition split
+kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic fourth_topic --formatter kafka.tools.DefaultMessageFormatter --property print.timestamp=true --property print.key=true --property print.value=true --property print.partition=true --from-beginning
+
+# Consumer in Groups
+
+1. Consume with group parameter
+   kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic fifth_topic --group my-first-application
+2. Next consumer for the topic in the group gets assigned a partition.
+3. More consumers for a topic in a group than partitions = consumer inactive
+
+
+
 
 
