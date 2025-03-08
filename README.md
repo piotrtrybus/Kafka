@@ -66,12 +66,30 @@ kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic first_topic 
 4. Consume with partition split
 kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic fourth_topic --formatter kafka.tools.DefaultMessageFormatter --property print.timestamp=true --property print.key=true --property print.value=true --property print.partition=true --from-beginning
 
-# Consumer in Groups
+# Consumer Groups
 
 1. Consume with group parameter
    kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic fifth_topic --group my-first-application
 2. Next consumer for the topic in the group gets assigned a partition.
 3. More consumers for a topic in a group than partitions = consumer inactive
+4. List consumer groups:
+kafka-consumer-groups.sh --bootstrap-server localhost:9092 --list
+5. Describe a consumer group:
+kafka-consumer-groups.sh --bootstrap-server localhost:9092 --describe --group my-first-application
+
+# Reset offsets
+1. Dry Run:
+kafka-consumer-groups.sh --bootstrap-server localhost:9092 --group my-first-application --reset-offsets --to-earliest --topic fifth_topic --dry-run
+
+2. Execute:
+kafka-consumer-groups.sh --bootstrap-server localhost:9092 --group my-first-application --reset-offsets --to-earliest --topic fifth_topic --execute
+
+
+
+
+
+
+
 
 
 
